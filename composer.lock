@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "9731f78df13125739516672f791728aa",
+    "hash": "980b30e4b686b25f0c821f5ded7a8f55",
     "packages": [
         {
             "name": "guzzle/guzzle",
@@ -249,12 +249,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Silex.git",
-                "reference": "a6dde11a6494e2c116326ca91b0066475e825a52"
+                "reference": "d877687625a51b1a1ed311b95e158148aa2d68ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Silex/zipball/a6dde11a6494e2c116326ca91b0066475e825a52",
-                "reference": "a6dde11a6494e2c116326ca91b0066475e825a52",
+                "url": "https://api.github.com/repos/fabpot/Silex/zipball/d877687625a51b1a1ed311b95e158148aa2d68ca",
+                "reference": "d877687625a51b1a1ed311b95e158148aa2d68ca",
                 "shasum": ""
             },
             "require": {
@@ -323,7 +323,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2013-06-06 07:02:30"
+            "time": "2013-06-19 14:39:26"
         },
         {
             "name": "symfony/console",
@@ -668,18 +668,52 @@
         },
         {
             "name": "wuzzitor/metagist-api",
-            "version": "0.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Wuzzitor/metagist-api.git",
-                "reference": "361c7fcb7e6490c7b746d2c29b7e0480ed8e5a96"
+                "reference": "93918b72f39b41ca35b42d248e4af5aaeb422721"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Wuzzitor/metagist-api/zipball/93918b72f39b41ca35b42d248e4af5aaeb422721",
+                "reference": "93918b72f39b41ca35b42d248e4af5aaeb422721",
+                "shasum": ""
+            },
+            "require": {
+                "guzzle/guzzle": "v3.7.0",
+                "monolog/monolog": "~1.0",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "silex/silex": "1.0.*@dev"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Metagist\\Api": "src"
+                    "Metagist\\Api": "src/"
                 }
-            }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Pozzi",
+                    "email": "bonndan76@googlemail.com"
+                }
+            ],
+            "description": "Metagist API libraries",
+            "homepage": "http://metagist.org",
+            "keywords": [
+                "api",
+                "metagist"
+            ],
+            "support": {
+                "source": "https://github.com/Wuzzitor/metagist-api/tree/master",
+                "issues": "https://github.com/Wuzzitor/metagist-api/issues"
+            },
+            "time": "2013-06-19 19:23:06"
         },
         {
             "name": "wuzzitor/metagist.org",
@@ -700,7 +734,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "silex/silex": 20
+        "silex/silex": 20,
+        "wuzzitor/metagist-api": 20
     },
     "platform": {
         "php": ">=5.3.3"
