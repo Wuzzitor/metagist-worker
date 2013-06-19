@@ -1,0 +1,62 @@
+{
+    "name"        : "wuzzitor/metagist-worker",
+    "type"        : "application",
+    "description" : "Metagist Information Factory",
+    "homepage"    : "http://metagist.org",
+    "keywords"    : ["metagist", "api"],
+    "license"     : "MIT",
+    "authors"     : [
+        {
+            "name"  : "Daniel Pozzi",
+            "email" : "bonndan76@googlemail.com"
+        }
+    ],
+    "require": {
+        "php"                   : ">=5.3.3",
+        "silex/silex"           : "1.0.*@dev",
+        "symfony/console"       : "~2.2",
+        "guzzle/guzzle"         : "v3.7.0",
+        "monolog/monolog"       : "~1.0",
+        "wuzzitor/metagist.org" : "0.0.4",
+        "wuzzitor/metagist-api" : "0.0.0"
+    },
+    "require-dev": {
+        
+    },
+    "autoload": {
+        "psr-0": {
+            "Metagist\\Worker": "src"
+        }
+    },
+    "repositories": [
+        { 
+            "type": "package",
+            "package": {
+                "name": "wuzzitor/metagist-api",
+                "version": "0.0.0",
+                "source": {
+                    "url": "https://github.com/Wuzzitor/metagist-api.git",
+                    "type": "git",
+                    "reference": "361c7fcb7e6490c7b746d2c29b7e0480ed8e5a96"
+                },
+                "autoload": {
+                    "psr-0": {
+                        "Metagist\\Api": "src"
+                    }
+                }
+            }
+        },
+        { 
+            "type": "package",
+            "package": {
+                "name": "wuzzitor/metagist.org",
+                "version": "0.0.4",
+                "source": {
+                    "url": "https://github.com/Wuzzitor/metagist.org.git",
+                    "type": "git",
+                    "reference": "0.0.4"
+                }
+            }
+        }
+    ]
+}
