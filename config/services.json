@@ -1,0 +1,11 @@
+{
+    "services": {
+        "Server": {
+            "class": "\\Metagist\\Api\\ServerClient",
+            "params": {
+                "consumer_key": "",
+                "consumer_secret": ""
+            }
+        }
+    }
+}
