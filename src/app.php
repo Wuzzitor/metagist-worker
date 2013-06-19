@@ -5,6 +5,8 @@
  * @author Daniel Pozzi <bonndan76@googlemail.com>
  */
 
+require_once __DIR__ . '/../config/config.php';
+
 /*
  * Monolog
  */
