@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Metagist worker console script.
+ * 
+ * @author Daniel Pozzi <bonndan76@googlemail.com>
+ */
+require_once __DIR__.'/vendor/autoload.php';
+
+$app = new Metagist\Worker\Application();
+require __DIR__.'/src/app.php';
+$app->boot();
+
+$console = require __DIR__.'/src/console.php';
+$console->run();
+
