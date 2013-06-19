@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /* @var $app \Metagist\Worker\Application */
 
 $console = new Application('Metagist Worker', '0.1');
+
 /**
  * Register the "scan" command.
  */
@@ -29,5 +30,18 @@ EOT
             $app->scan($package);
     })
 ;
-
+    
+/**
+ * Register stub command "expect-request"
+ */
+$console
+    ->register('expect-request')
+    ->setName('expect-request')
+    ->setDescription('Waits for scan jobs ')
+    ->setHelp('The <info>expect-request</info> command launches a gearman worker.')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        echo 'to be done.';
+    })
+;
+    
 return $console;
