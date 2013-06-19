@@ -22,9 +22,4 @@ $app->register(new MonologServiceProvider(), array(
  */
 $app->register(new Metagist\Api\ServiceProvider());
 
-/*
- * The api controller registers itself
- */
-new Metagist\Worker\ApiController($app);
-
 return $app;
