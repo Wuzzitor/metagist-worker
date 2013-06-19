@@ -1,0 +1,8 @@
+[program:mgworker]
+; http://webadvent.org/2009/daemonize-your-php-by-sean-coates
+command=/usr/local/bin/php console.php expect-request
+numprocs=1
+directory=/var/opt/metagist-worker
+stdout_logfile=/var/opt/metagist-worker/supervisord.log
+autostart=true
+autorestart=true
