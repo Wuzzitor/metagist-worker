@@ -1,9 +1,0 @@
-Metagist Worker
-===============
-
-Retrieves information on composer packages from different sources.
-
-Todo
-----
-
-* http://www.masnun.com/2011/11/02/gearman-php-and-supervisor-processing-background-jobs-with-sanity.html
