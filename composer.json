@@ -17,6 +17,8 @@
         "symfony/console"       : "~2.2",
         "guzzle/guzzle"         : "v3.7.0",
         "monolog/monolog"       : "~1.0",
+        "jms/serializer"        : "0.12.0",
+        
         "wuzzitor/metagist.org" : "0.0.4",
         "wuzzitor/metagist-api" : "dev-master"
     },
@@ -25,6 +27,7 @@
     },
     "autoload": {
         "psr-0": {
+            "Metagist": "vendor/wuzzitor/metagist.org/src",
             "Metagist\\Worker": "src"
         }
     },
