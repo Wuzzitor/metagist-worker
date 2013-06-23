@@ -3,8 +3,18 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "7a3f6222aeecb9769a12aed354078c4b",
+    "hash": "6627d5ca073153269724e90cf4314542",
     "packages": [
+        {
+            "name": "bonndan/RMT",
+            "version": "0.0.0",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/bonndan/RMT.git",
+                "reference": "0e6e2798939e651a20aa6c1f698a10db210d4cc5"
+            },
+            "type": "library"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.1.1",
@@ -1563,7 +1573,8 @@
     "stability-flags": {
         "silex/silex": 20,
         "wuzzitor/metagist-api": 20,
-        "knplabs/packagist-api": 20
+        "knplabs/packagist-api": 20,
+        "bonndan/rmt": 20
     },
     "platform": {
         "php": ">=5.3.3"
