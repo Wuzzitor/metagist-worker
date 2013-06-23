@@ -8,7 +8,7 @@ use Metagist\Worker\Application;
  * 
  * @author Daniel Pozzi <bonndan76@googlemail.com>
  */
-class PackageScanner implements ScannerInterface
+class PackageScanner extends Base implements ScannerInterface
 {
     /**
      * config key
@@ -18,25 +18,11 @@ class PackageScanner implements ScannerInterface
     const ENABLED_SCANNERS = 'metagist.worker.scanners';
     
     /**
-     * application
-     * 
-     * @var \Metagist\Worker\Application
-     */
-    private $application;
-    
-    /**
      * server interface
      * 
      * @var \Metagist\Api\ServerInterface 
      */
     private $server;
-    
-    /**
-     * logger instance
-     * 
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
     
     /**
      * Constructor
@@ -45,9 +31,8 @@ class PackageScanner implements ScannerInterface
      */
     public function __construct(Application $application)
     {
-        $this->application = $application;
+        parent::__construct($application);
         $this->server      = $application->getApi()->server();
-        $this->logger      = $application->getLogger();
     }
 
     /**
