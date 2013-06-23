@@ -68,12 +68,12 @@ class PackageScanner extends Base implements ScannerInterface
     protected function getScannerInstance($class)
     {
         if (is_string($class)) {
-            if (!is_subclass_of($class, 'ScannerInterface') ) {
-                $this->logger->warning('Ignoring ' . $class);
+            if (!is_subclass_of($class, "\Metagist\Worker\Scanner\ScannerInterface") ) {
+                $this->logger->warning('Ignoring ' . $class . ', does not implement ScannerInterface.');
                 return null;
             }
             
-            $this->logger->info('Using scanner ' . $className);
+            $this->logger->info('Using scanner ' . $class);
             return new $class($this->application);
         }
         
