@@ -17,8 +17,9 @@
         "symfony/console"       : "~2.2",
         "guzzle/guzzle"         : "v3.7.0",
         "monolog/monolog"       : "~1.0",
-        "wuzzitor/metagist.org" : "0.0.4",
-        "wuzzitor/metagist-api" : "dev-master"
+        "wuzzitor/metagist.org" : "0.1.0",
+        "wuzzitor/metagist-api" : "dev-master",
+        "knplabs/packagist-api" : "0.1.*@dev"
     },
     "require-dev": {
         
@@ -38,11 +39,11 @@
             "type": "package",
             "package": {
                 "name": "wuzzitor/metagist.org",
-                "version": "0.0.4",
+                "version": "0.1.0",
                 "source": {
                     "url": "https://github.com/Wuzzitor/metagist.org.git",
                     "type": "git",
-                    "reference": "0.0.4"
+                    "reference": "0.1.0"
                 }
             }
         }
