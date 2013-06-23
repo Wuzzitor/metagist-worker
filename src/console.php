@@ -9,6 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Monolog\Logger;
+
 /* @var $app \Metagist\Worker\Application */
 
 $console = new Application('Metagist Worker', '0.1');
@@ -26,8 +28,10 @@ The <info>scan</info> retrieves information on the given using different sources
 EOT
         )
         ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-            $package = $input->getArgument('package');
-            $app->requestScan($package);
+            $identifier = $input->getArgument('package');
+            $log = $app['monolog']; /* @var $log \Monolog\Logger */
+            $log->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', Logger::INFO));
+            $app->scanPackage($identifier);
     })
 ;
     
