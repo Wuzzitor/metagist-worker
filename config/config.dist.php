@@ -18,3 +18,13 @@ $app[\Metagist\Api\ServiceProvider::APP_SERVER_CONFIG] = array(
     'consumer_secret' => 'dev-test',
 );
 $app[\Metagist\Api\ServiceProvider::APP_SERVICES] = __DIR__ . '/../config/services.json';
+
+$app[\Metagist\Worker\Scanner\PackageScanner::ENABLED_SCANNERS] = array(
+    "\Metagist\Worker\Scanner\Packagist",
+    "\Metagist\Worker\Scanner\GitHub",
+);
+
+$app[\Metagist\Worker\Scanner\GitHub::GITHUB_CLIENT_CONFIG] = array(
+    "client_id" => 'your-api-id',
+    "client_secret" => 'your-api-secret'
+);
