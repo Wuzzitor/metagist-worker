@@ -80,4 +80,54 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException("\Metagist\Worker\Exception");
         $this->app->requestScan('test/123');
     }
+    
+    /**
+     * Ensures scan calls work on the gearman worker.
+     * 
+     * @todo mocking addFunction did not work. Perhaps because of callback?
+     */
+    public function testScan()
+    {
+        $worker = $this->getMock("\GearmanWorker", array('work', 'returnCode', 'addServer', 'addFunction'));
+        
+        $worker->expects($this->at(0))
+            ->method('work')
+            ->will($this->returnValue(true));
+        $worker->expects($this->at(1))
+            ->method('work')
+            ->will($this->returnValue(false));
+        $worker->expects($this->once())
+            ->method('returnCode')
+            ->will($this->returnValue(GEARMAN_SUCCESS));
+        $this->app->setGearmanWorker($worker);
+        $this->app[\Metagist\Api\ServiceProvider::API] = $this->getMock("\Metagist\Api\ServiceProvider");
+        
+        $this->setExpectedException(NULL);
+        $this->app->scan();
+    }
+    
+    /**
+     * Ensures an exception is thrown if the worker does not return success code
+     */
+    public function testScanException()
+    {
+        $worker = $this->getMock("\GearmanWorker", array('work', 'returnCode', 'addFunction'));
+        
+        $worker->expects($this->at(0))
+            ->method('work')
+            ->will($this->returnValue(true));
+        $worker->expects($this->at(1))
+            ->method('work')
+            ->will($this->returnValue(false));
+        
+        $worker->expects($this->once())
+            ->method('returnCode')
+            ->will($this->returnValue(false));
+        
+        $this->app->setGearmanWorker($worker);
+        $this->app[\Metagist\Api\ServiceProvider::API] = $this->getMock("\Metagist\Api\ServiceProvider");
+        
+        $this->setExpectedException("\Metagist\Worker\Exception");
+        $this->app->scan();
+    }
 }

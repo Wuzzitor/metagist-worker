@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Application.php
  * 
  * @author Daniel Pozzi <bonndan76@googlemail.com>
  */
+
 namespace Metagist\Worker;
 
 use Silex\Application as SilexApp;
@@ -16,12 +18,26 @@ use Silex\Application as SilexApp;
 class Application extends SilexApp
 {
     /**
+     * name of the scan task
+     * 
+     * @var string
+     */
+    const GEARMAN_SCAN_TASK = 'scan';
+
+    /**
      * gearman client instance.
      * 
      * @var \GearmanClient 
      */
     protected $gearmanClient;
     
+    /**
+     * gearman worker instance.
+     * 
+     * @var \GearmanWorker
+     */
+    protected $gearmanWorker;
+
     /**
      * Returns the Api service provider.
      * 
@@ -50,7 +66,7 @@ class Application extends SilexApp
     public function requestScan($package)
     {
         $gmClient = $this->getGearmanClient();
-        $gmClient->doBackground("scan", $package);
+        $gmClient->doBackground(self::GEARMAN_SCAN_TASK, $package);
 
         $code = $gmClient->returnCode();
         if ($code != GEARMAN_SUCCESS) {
@@ -63,10 +79,18 @@ class Application extends SilexApp
     /**
      * Does the real job.
      * 
-     * @param string $package identifier
      */
-    public function scan($package)
+    public function scan()
     {
+        $gmworker = $this->getGearmanWorker();
+        
+        while ($gmworker->work()) {
+            $code = $gmworker->returnCode();
+            if ($code != GEARMAN_SUCCESS) {
+                throw new Exception('Gearman worker error: ' . $code, $code);
+                break;
+            }
+        }
     }
 
     /**
@@ -83,10 +107,10 @@ class Application extends SilexApp
             $gmclient->addServer();
             return $gmclient;
         }
-        
+
         return $this->gearmanClient;
     }
-    
+
     /**
      * Inject a gearman client.
      * 
@@ -95,5 +119,34 @@ class Application extends SilexApp
     public function setGearmanClient(\GearmanClient $client)
     {
         $this->gearmanClient = $client;
+    }
+
+    /**
+     * Returns the gearman worker.
+     * 
+     * @return \GearmanWorker
+     */
+    protected function getGearmanWorker()
+    {
+        if ($this->gearmanWorker === null) {
+            $gmworker = new \GearmanWorker();
+            $gmworker->addServer();
+            $scanner = new \Metagist\Worker\Scanner\PackageScanner($this);
+            $gmworker->addFunction(self::GEARMAN_SCAN_TASK, array($scanner, 'executeScanJob'));
+                
+            return $gmworker;
+        }
+        
+        return $this->gearmanWorker;
+    }
+
+    /**
+     * Inject a gearman worker.
+     * 
+     * @param \GearmanWorker $worker
+     */
+    public function setGearmanWorker(\GearmanWorker $worker)
+    {
+        $this->gearmanWorker = $worker;
     }
 }

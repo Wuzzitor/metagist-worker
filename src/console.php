@@ -27,7 +27,7 @@ EOT
         )
         ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
             $package = $input->getArgument('package');
-            $app->scan($package);
+            $app->requestScan($package);
     })
 ;
     
@@ -40,8 +40,8 @@ $console
     ->setDescription('Waits for scan jobs ')
     ->setHelp('The <info>expect-request</info> command launches a gearman worker.')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-        echo 'to be done.';
+        $app->scan();
     })
 ;
-    
+
 return $console;
