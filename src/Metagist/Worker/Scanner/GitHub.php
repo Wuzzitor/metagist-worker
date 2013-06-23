@@ -12,6 +12,13 @@ use Metagist\Worker\Scanner\GithubApi\Stats;
 class GitHub extends Base implements ScannerInterface
 {
     /**
+     * fake user agent
+     * 
+     * @var string
+     */
+    const USER_AGENT = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0";
+    
+    /**
      * Configuration key where the github credentials are stored
      * 
      * @var string
@@ -173,11 +180,10 @@ class GitHub extends Base implements ScannerInterface
         try {
             $result = $client->get($url);
             /* @var $result \Github\HttpClient\Message\Response */
+            $crawler->addHtmlContent($result->getContent());
         } catch (\Github\Exception\RuntimeException $exception) {
-            $this->logger->alert("Error retrieving info from $url:" . $exception->getMessage());
+            $this->logger->alert("Error retrieving info from $url:" . $client->getLastRequest(). $client->getLastResponse());
         }
-        
-        $crawler->addHtmlContent($result->getContent());
         
         return $crawler;
     }
@@ -191,7 +197,12 @@ class GitHub extends Base implements ScannerInterface
     {
         $client = $this->getClient()->getHttpClient();
         $client->setOption('base_url', $this->githubBaseUrl);
-        
+        $client->setHeaders(
+            array(
+                "User-Agent" => self::USER_AGENT,
+                "Accept" => "text/html,application/xhtml+xml,application/xml,application/vnd.github.beta+json"
+            )
+        );
         return $client;
     }
     
@@ -211,7 +222,7 @@ class GitHub extends Base implements ScannerInterface
                 \Github\Client::AUTH_URL_CLIENT_ID
             );
             $client->setHeaders(
-                array("User-Agent" => "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0")
+                array("User-Agent" => self::USER_AGENT)
             );
             $this->client = $client;
         }

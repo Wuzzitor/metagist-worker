@@ -94,6 +94,17 @@ class Application extends SilexApp
     }
 
     /**
+     * Manual scan initialisation.
+     * 
+     * @param string $identifier
+     */
+    public function scanPackage($identifier)
+    {
+        $scanner = new \Metagist\Worker\Scanner\PackageScanner($this);
+        return $scanner->scanByPackageIdentifier($identifier);
+    }
+    
+    /**
      * Returns a gearman client instance. 
      * 
      * Creates one on the fly if no one injected.
