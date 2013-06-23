@@ -89,7 +89,7 @@ class PackageScanner extends Base implements ScannerInterface
      * Executes a scan, retrieves remote package info.
      * 
      * @param string $identifier
-     * @return type
+     * @return \Metagist\MetaInfo[]
      */
     public function scanByPackageIdentifier($identifier)
     {
