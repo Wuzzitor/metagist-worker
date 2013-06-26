@@ -58,7 +58,8 @@ class ApiController implements \Metagist\Api\WorkerInterface
      */
     public function index()
     {
-        $this->application->getServerClient();
+        //just check that the server is properly configured.
+        $this->application->getApi()->server();
         return $this->application->json("Metagist Worker");
     }
     
