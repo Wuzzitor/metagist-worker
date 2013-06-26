@@ -76,6 +76,7 @@ class ApiController implements \Metagist\Api\WorkerInterface
         try {
             $consumerKey = $this->application->getApi()->validateRequest($message->__toString());
         } catch (\Metagist\Api\Exception $exception) {
+            $this->application->getLogger()->error($exception->getMessage());
             return $this->application->json($exception->getMessage(), 403);
         }
         
