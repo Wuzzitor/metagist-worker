@@ -31,6 +31,18 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * Ensures the api returns the logger instance.
+     */
+    public function testGetLogger()
+    {
+        $logger =  $this->getMock("\Psr\Log\LoggerInterface");
+        $this->app[\Metagist\Api\ServiceProvider::API] = $logger;
+        $test = $this->app->getLogger();
+        $this->assertInstanceOf("\Psr\Log\LoggerInterface", $test);
+        $this->assertEquals($logger, $test);
+    }
+    
+    /**
      * Ensures the api getter returns what is registered under \Metagist\Api\ServiceProvider::API
      */
     public function testGetApi()
