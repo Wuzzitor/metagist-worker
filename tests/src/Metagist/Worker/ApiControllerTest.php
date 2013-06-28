@@ -85,6 +85,8 @@ class ApiControllerTest extends \PHPUnit_Framework_TestCase
         $this->apiMock->expects($this->once())
             ->method('validateRequest')
             ->will($this->throwException(new \Metagist\Api\Exception('test')));
+        $this->app['monolog']->expects($this->once())
+            ->method('error');
         
         $response = $this->controller->scan('test', 'test');
         $this->assertEquals(403, $response->getStatusCode());
