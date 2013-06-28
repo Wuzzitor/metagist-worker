@@ -13,7 +13,6 @@ require_once __DIR__ . '/../config/config.php';
 use Silex\Provider\MonologServiceProvider;
 $app->register(new MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__ . '/../log/app.log',
-    'monolog.name' => 'app',
 ));
 
 /**
