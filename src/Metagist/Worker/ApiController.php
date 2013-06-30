@@ -76,9 +76,10 @@ class ApiController implements \Metagist\Api\WorkerInterface
             'Received scan request to scan ' . $author . '/' . $name
         );
         
-        $message = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+        $request = $this->application->getApi()->getIncomingRequest();
+        
         try {
-            $consumerKey = $this->application->getApi()->validateRequest($message->__toString());
+            $consumerKey = $this->application->getApi()->validateRequest($request->__toString());
             $this->application->getLogger()->info('Requester has authenticated succesfully as ' . $consumerKey);
         } catch (\Metagist\Api\Exception $exception) {
             $this->application->getLogger()->error($exception->getMessage());

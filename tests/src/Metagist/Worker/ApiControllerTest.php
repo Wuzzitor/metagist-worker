@@ -47,6 +47,11 @@ class ApiControllerTest extends \PHPUnit_Framework_TestCase
         $this->apiMock        = $this->getMock("\Metagist\Api\ServiceProvider");
         $this->app[\Metagist\Api\ServiceProvider::API] = $this->apiMock;
         
+        $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();;
+        $this->apiMock->expects($this->once())
+            ->method('getIncomingRequest')
+            ->will($this->returnValue($request));
+        
         /*
          * gearman mocking
          */
