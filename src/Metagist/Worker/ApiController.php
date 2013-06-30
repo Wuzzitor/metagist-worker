@@ -72,22 +72,25 @@ class ApiController implements \Metagist\Api\WorkerInterface
      */
     public function scan($author, $name)
     {
+        $this->application->getLogger()->info(
+            'Received scan request to scan ' . $author . '/' . $name
+        );
+        
         $message = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
         try {
             $consumerKey = $this->application->getApi()->validateRequest($message->__toString());
+            $this->application->getLogger()->info('Requester has authenticated succesfully as ' . $consumerKey);
         } catch (\Metagist\Api\Exception $exception) {
             $this->application->getLogger()->error($exception->getMessage());
             return $this->application->json($exception->getMessage(), 403);
         }
         
-        $this->application->getLogger()->info(
-            'Received scan request from ' . $consumerKey. ' to scan ' . $author . '/' . $name
-        );
-        
         try {
-            $this->application->requestScan($author . '/' . $name);
-            return $this->application->json('Queued job to scan package ' . $author . '/' . $name);
+            $identifier = $author . '/' . $name;
+            $this->application->requestScan($identifier);
+            return $this->application->json('Queued job to scan package ' . $identifier);
         } catch (\Metagist\Worker\Exception $exception) {
+            $this->application->getLogger()->error('Error requesting a scan of ' . $identifier . ':' . $exception->getMessage());
             return $this->application->json($exception->getMessage(), 500);
         } 
     }
