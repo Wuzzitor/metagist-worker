@@ -72,11 +72,9 @@ class ApiController implements \Metagist\Api\WorkerInterface
      */
     public function scan($author, $name)
     {
-        $this->application->getLogger()->info(
-            'Received scan request to scan ' . $author . '/' . $name
-        );
-        
-        $request = $this->application->getApi()->getIncomingRequest();
+        $identifier = $author . '/' . $name;
+        $request    = $this->application->getApi()->getIncomingRequest();
+        $this->application->getLogger()->info('Received request to scan ' . $identifier);
         
         try {
             $consumerKey = $this->application->getApi()->validateRequest($request->__toString());
@@ -87,9 +85,10 @@ class ApiController implements \Metagist\Api\WorkerInterface
         }
         
         try {
-            $identifier = $author . '/' . $name;
             $this->application->requestScan($identifier);
-            return $this->application->json('Queued job to scan package ' . $identifier);
+            $message = 'Queued job to scan package ' . $identifier;
+            $this->application->getLogger()->info($message);
+            return $this->application->json($message);
         } catch (\Metagist\Worker\Exception $exception) {
             $this->application->getLogger()->error('Error requesting a scan of ' . $identifier . ':' . $exception->getMessage());
             return $this->application->json($exception->getMessage(), 500);
