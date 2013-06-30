@@ -24,6 +24,13 @@ class PackageScannerTest extends \PHPUnit_Framework_TestCase
     private $apiMock;
     
     /**
+     * server client mock
+     * 
+     * @var \Metagist\Api\ServerInterface
+     */
+    private $serverMock;
+    
+    /**
      * Test setup.
      */
     public function setUp()
@@ -33,8 +40,17 @@ class PackageScannerTest extends \PHPUnit_Framework_TestCase
         $this->app = new \Metagist\Worker\Application();
         $this->app['monolog'] = $this->getMock("\Psr\Log\LoggerInterface");
         $this->apiMock        = $this->getMock("\Metagist\Api\ServiceProvider");
-        $this->app[\Metagist\Api\ServiceProvider::API] = $this->apiMock;
+        $apiMock = $this->apiMock;
+        $this->app[\Metagist\Api\ServiceProvider::API] = $this->app->share(
+            function () use ($apiMock) {return $apiMock;}
+        );
+        $this->serverMock = $this->getMock("\Metagist\Api\ServerInterface");
+        $this->apiMock->expects($this->any())
+            ->method('server')
+            ->will($this->returnValue($this->serverMock));
         
+        $this->app[PackageScanner::ENABLED_SCANNERS] = array();
+         
         $this->scanner = new PackageScanner($this->app);
     }
     
@@ -67,5 +83,26 @@ class PackageScannerTest extends \PHPUnit_Framework_TestCase
         
         $package = new \Metagist\Package('test/test');
         $this->scanner->scan($package);
+    }
+    
+    /**
+     * Ensures a gearman job triggers scanning.
+     */
+    public function testExecuteScanJob()
+    {
+        $job = $this->getMock("\GearmanJob", array("workload", 'handle'));
+        $job->expects($this->once())
+            ->method('workload')
+            ->will($this->returnValue("test/test"));
+        $job->expects($this->once())
+            ->method('handle')
+            ->will($this->returnValue("some job name"));
+        
+        $package = new \Metagist\Package('test/test');
+        $this->serverMock->expects($this->once())
+            ->method('package')
+            ->will($this->returnValue($package));
+        
+        $this->scanner->executeScanJob($job);
     }
 }

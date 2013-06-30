@@ -110,6 +110,7 @@ class PackageScanner extends Base implements ScannerInterface
         $this->logger->info("Received job: " . $job->handle() . " to scan package " . $workload);
         
         $metaInfos =  $this->scanByPackageIdentifier($workload);
+        list ($author, $name) = explode('/', $workload);
         foreach ($metaInfos as $metaInfo) {
             $this->server->pushInfo($author, $name, $metaInfo);
         }
