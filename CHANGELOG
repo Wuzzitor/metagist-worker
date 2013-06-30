@@ -1,0 +1,18 @@
+
+VERSION 0  VERSION FOR SYSTEM TESTING
+=====================================
+
+   Version 0.0 - Version for system testing
+      30/06/2013 17:12  0.0.2  initial release
+         4cb4b77 fixed a bug in the package scanner
+         1a217c1 updated RMT integration
+         ef269a2 improved debugging
+         c2352f4 updated metagist-api dep, using getIncomingRequest() from api in controller
+         5c79483 improved debugging messages
+         c539b8b removed log name from config
+         3d1a5ac removed log level filter from config
+         1b16524 improved apicontroller test
+         32d62fb added test for application::getLogger()
+         0fd2c20 api exceptions are logged
+         e6b2d48 fixed a wrong api call in api/index
+         c95f56b Added RMT
