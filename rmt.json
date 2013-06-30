@@ -1,5 +1,14 @@
 {
-   "vcs": "git",
-   "version-generator": "semantic",
-   "version-persister": "vcs-tag"
+    "vcs": "git",
+    "prerequisites": ["display-last-changes"],
+    "version-generator": "semantic",
+    "version-persister": "vcs-tag",
+    "pre-release-actions": [
+        {
+            "name": "changelog-update",
+            "format": "semantic",
+            "dump-commits": true
+        },
+        "vcs-commit"
+    ]
 }
