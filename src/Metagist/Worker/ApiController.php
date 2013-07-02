@@ -77,7 +77,7 @@ class ApiController implements \Metagist\Api\WorkerInterface
         $this->application->getLogger()->info('Received request to scan ' . $identifier);
         
         try {
-            $consumerKey = $this->application->getApi()->validateRequest($request->__toString());
+            $consumerKey = $this->application->getApi()->validateRequest($request);
             $this->application->getLogger()->info('Requester has authenticated succesfully as ' . $consumerKey);
         } catch (\Metagist\Api\Exception $exception) {
             $this->application->getLogger()->error($exception->getMessage());

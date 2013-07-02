@@ -20,7 +20,7 @@ class ApiControllerTest extends \PHPUnit_Framework_TestCase
      * app 
      * @var Application
      */
-    private $apiMock;
+    private $api;
     
     /**
      * system under test
@@ -42,15 +42,14 @@ class ApiControllerTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         
-        $this->app = new \Metagist\Worker\Application();
+        $this->app            = new \Metagist\Worker\Application();
         $this->app['monolog'] = $this->getMock("\Psr\Log\LoggerInterface");
         $this->apiMock        = $this->getMock("\Metagist\Api\ServiceProvider");
         $this->app[\Metagist\Api\ServiceProvider::API] = $this->apiMock;
         
-        $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();;
         $this->apiMock->expects($this->once())
             ->method('getIncomingRequest')
-            ->will($this->returnValue($request));
+            ->will($this->returnValue(new \Guzzle\Http\Message\Request('POST', 'test')));
         
         /*
          * gearman mocking
