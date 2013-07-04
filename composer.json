@@ -15,6 +15,7 @@
         "php"                   : ">=5.3.3",
         "silex/silex"           : "1.0.*@dev",
         "symfony/console"       : "~2.2",
+        "symfony/security"      : "~2.2",
         "guzzle/guzzle"         : "v3.7.0",
         "monolog/monolog"       : "~1.0",
         "wuzzitor/metagist.org" : "0.1.2",
