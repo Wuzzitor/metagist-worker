@@ -112,7 +112,14 @@ class PackageScanner extends Base implements ScannerInterface
         $metaInfos =  $this->scanByPackageIdentifier($workload);
         list ($author, $name) = explode('/', $workload);
         foreach ($metaInfos as $metaInfo) {
-            $this->server->pushInfo($author, $name, $metaInfo);
+            try {
+                $this->server->pushInfo($author, $name, $metaInfo);
+            } catch (\Exception $exception) {
+                $this->logger->error(
+                    'Error trying to push ' . $metaInfo->getGroup() . ': ' 
+                    . $exception->getMessage()
+                );
+            }
         }
 
         return true;
