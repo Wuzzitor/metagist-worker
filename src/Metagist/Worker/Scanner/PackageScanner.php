@@ -102,7 +102,7 @@ class PackageScanner extends Base implements ScannerInterface
      * Executes the gearman job.
      * 
      * @param \GearmanJob $job
-     * @return type
+     * @return boolean
      */
     public function executeScanJob(\GearmanJob $job)
     {
@@ -112,16 +112,30 @@ class PackageScanner extends Base implements ScannerInterface
         $metaInfos =  $this->scanByPackageIdentifier($workload);
         list ($author, $name) = explode('/', $workload);
         foreach ($metaInfos as $metaInfo) {
-            try {
-                $this->server->pushInfo($author, $name, $metaInfo);
-            } catch (\Exception $exception) {
-                $this->logger->error(
-                    'Error trying to push ' . $metaInfo->getGroup() . ': ' 
-                    . $exception->getMessage()
-                );
-            }
+            $this->pushInfo($metaInfo, $author, $name);
         }
 
         return true;
+    }
+    
+    /**
+     * Attemps to push a metainfo to the server.
+     * 
+     * Exceptions are caught and logged.
+     * 
+     * @param \Metagist\MetaInfo $metaInfo
+     * @param string             $author
+     * @param string             $name
+     */
+    public function pushInfo(\Metagist\MetaInfo $metaInfo, $author, $name)
+    {
+        try {
+            $this->server->pushInfo($author, $name, $metaInfo);
+        } catch (\Exception $exception) {
+            $this->logger->error(
+                'Error trying to push ' . $metaInfo->getGroup() . ': ' 
+                . $exception->getMessage()
+            );
+        }
     }
 }

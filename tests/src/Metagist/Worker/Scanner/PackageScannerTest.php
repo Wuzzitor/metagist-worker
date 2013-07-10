@@ -105,4 +105,32 @@ class PackageScannerTest extends \PHPUnit_Framework_TestCase
         
         $this->scanner->executeScanJob($job);
     }
+    
+    /**
+     * Tests the push method.
+     */
+    public function testPushInfo()
+    {
+        $info = \Metagist\MetaInfo::fromValue('test', 'test');
+        $this->serverMock->expects($this->once())
+            ->method('pushInfo')
+            ->will($this->returnValue(true));
+        
+        $this->scanner->pushInfo($info, 'test', 'test');
+    }
+    
+    /**
+     * Ensures that exceptions are caught.
+     */
+    public function testPushInfoCatchesException()
+    {
+        $info = \Metagist\MetaInfo::fromValue('test', 'test');
+        
+        $this->serverMock->expects($this->once())
+            ->method('pushInfo')
+            ->will($this->throwException(new \Exception('test')));
+        
+        $this->setExpectedException(NULL);
+        $this->scanner->pushInfo($info, 'test', 'test');
+    }
 }
