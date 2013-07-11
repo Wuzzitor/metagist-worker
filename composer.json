@@ -18,7 +18,7 @@
         "symfony/security"      : "~2.2",
         "guzzle/guzzle"         : "v3.7.0",
         "monolog/monolog"       : "~1.0",
-        "wuzzitor/metagist.org" : "0.1.2",
+        "wuzzitor/metagist.org" : "0.1.8",
         "wuzzitor/metagist-api" : "dev-master",
         "knplabs/packagist-api" : "0.1.*@dev",
         
@@ -28,7 +28,10 @@
         "symfony/css-selector"  : "~2.2",
         "symfony/dom-crawler"   : "~2.2",
         
-        "bonndan/RMT"           : "@dev"
+        "bonndan/RMT"           : "@dev",
+        
+        "zendframework/zend-feed": "2.2.1",
+        "zendframework/zend-cache": "2.2.1"
     },
     "require-dev": {
         
@@ -48,11 +51,11 @@
             "type": "package",
             "package": {
                 "name": "wuzzitor/metagist.org",
-                "version": "0.1.2",
+                "version": "0.1.8",
                 "source": {
                     "url": "https://github.com/Wuzzitor/metagist.org.git",
                     "type": "git",
-                    "reference": "0.1.2"
+                    "reference": "0.1.8"
                 }
             }
         },
