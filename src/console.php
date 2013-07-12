@@ -48,4 +48,21 @@ $console
     })
 ;
 
+/**
+ * Register a command to follow the packagist feed
+ */
+$console
+    ->register('follow-packagist')
+    ->setName('follow-packagist')
+    ->setDescription('Scans the packagist.org package updated feed.')
+    ->setHelp('The <info>follow-packagist</info> scans the packagist.org feed (use as cronjob).')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $app->followPackagist();
+    })
+;
+    
+/**
+ * Consume packagist.org feeds
+ */
+
 return $console;
