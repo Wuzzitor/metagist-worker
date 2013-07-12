@@ -23,6 +23,16 @@ class Application extends SilexApp
      * @var string
      */
     const GEARMAN_SCAN_TASK = 'scan';
+    
+    /**
+     * config key for the feed consumer
+     * 
+     * array keys:
+     * cache_dir
+     * 
+     * @var string
+     */
+    const FEED_CONFIG = 'metagist.worker.feed';
 
     /**
      * gearman client instance.
@@ -97,6 +107,7 @@ class Application extends SilexApp
      * Manual scan initialisation.
      * 
      * @param string $identifier
+     * @return \Metagist\MetaInfo[]
      */
     public function scanPackage($identifier)
     {
@@ -104,6 +115,34 @@ class Application extends SilexApp
         return $scanner->scanByPackageIdentifier($identifier);
     }
     
+    /**
+     * Follows the packagist.org feed, scans every updated package.
+     * 
+     */
+    public function followPackagist()
+    {
+        $reader = new FeedReader($this->createFeed(), $this->createPackageScanner());
+        $reader->read();
+    }
+    
+    /**
+     * Creates a feed reader.
+     * 
+     * @return \Zend\Feed\Reader\Feed\FeedInterface
+     * @link http://framework.zend.com/manual/2.0/en/modules/zend.cache.storage.adapter.html#the-filesystem-adapter
+     */
+    protected function createFeed()
+    {
+        $config  = $this[self::FEED_CONFIG];
+        $feedUrl = $config['feed_url'];
+        unset($config['feed_url']);
+        
+        $cache = \Zend\Cache\StorageFactory::adapterFactory('Filesystem', $config);
+        \Zend\Feed\Reader\Reader::setCache($cache);
+        \Zend\Feed\Reader\Reader::useHttpConditionalGet();
+        return \Zend\Feed\Reader\Reader::import($feedUrl);
+    }
+
     /**
      * Returns a gearman client instance. 
      * 
@@ -142,13 +181,25 @@ class Application extends SilexApp
         if ($this->gearmanWorker === null) {
             $gmworker = new \GearmanWorker();
             $gmworker->addServer();
-            $scanner = new \Metagist\Worker\Scanner\PackageScanner($this);
-            $gmworker->addFunction(self::GEARMAN_SCAN_TASK, array($scanner, 'executeScanJob'));
+            $gmworker->addFunction(
+                self::GEARMAN_SCAN_TASK,
+                array($this->createPackageScanner(), 'executeScanJob')
+            );
                 
             return $gmworker;
         }
         
         return $this->gearmanWorker;
+    }
+    
+    /**
+     * Creates a package scanner instance.
+     * 
+     * @return \Metagist\Worker\Scanner\PackageScanner
+     */
+    protected function createPackageScanner()
+    {
+        return new \Metagist\Worker\Scanner\PackageScanner($this);
     }
 
     /**

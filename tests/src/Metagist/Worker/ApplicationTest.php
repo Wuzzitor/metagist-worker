@@ -142,4 +142,21 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException("\Metagist\Worker\Exception");
         $this->app->scan();
     }
+    
+    /**
+     * Ensures that the packagist feed is read.
+     */
+    public function testFollowPackagist()
+    {
+        $this->app["metagist.worker.feed"] = array(
+            'cache_dir' => sys_get_temp_dir(),
+            'feed_url'  => 'http://localhost',
+        );
+        
+        $this->setExpectedException(
+            "\Zend\Feed\Reader\Exception\RuntimeException",
+            'DOMDocument cannot parse XML'
+        );
+        $this->app->followPackagist();
+    }
 }
