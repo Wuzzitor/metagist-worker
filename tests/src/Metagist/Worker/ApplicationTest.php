@@ -23,7 +23,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->app = new \Metagist\Worker\Application();
-        $this->app['monolog'] = $this->getMock("\Psr\Log\LoggerInterface");
+        $this->app['monolog'] = $this->getMockBuilder("\Monolog\Logger")
+            ->disableOriginalConstructor()
+            ->getMock();
         
         if (!defined('GEARMAN_SUCCESS')) {
             define('GEARMAN_SUCCESS', 'GEARMAN_SUCCESS');
@@ -35,11 +37,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLogger()
     {
-        $logger =  $this->getMock("\Psr\Log\LoggerInterface");
-        $this->app[\Metagist\Api\ServiceProvider::API] = $logger;
         $test = $this->app->getLogger();
-        $this->assertInstanceOf("\Psr\Log\LoggerInterface", $test);
-        $this->assertEquals($logger, $test);
+        $this->assertInstanceOf("\Monolog\Logger", $test);
     }
     
     /**

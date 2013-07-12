@@ -121,8 +121,19 @@ class Application extends SilexApp
      */
     public function followPackagist()
     {
+        $this->enableConsoleLogOutput();
         $reader = new FeedReader($this->createFeed(), $this->createPackageScanner());
         $reader->read();
+    }
+    
+    /**
+     * Enable console output.
+     */
+    protected function enableConsoleLogOutput()
+    {
+        $this->getLogger()->pushHandler(
+            new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Logger::INFO)
+        );
     }
     
     /**
@@ -140,6 +151,19 @@ class Application extends SilexApp
         $cache = \Zend\Cache\StorageFactory::adapterFactory('Filesystem', $config);
         \Zend\Feed\Reader\Reader::setCache($cache);
         \Zend\Feed\Reader\Reader::useHttpConditionalGet();
+        $adapter = new \Zend\Http\Client\Adapter\Curl();
+        $client = \Zend\Feed\Reader\Reader::getHttpClient();
+        $client->setAdapter($adapter);
+        
+        $cert = realpath(__DIR__ . '/../../config/packagist.org.pem');
+        $adapter->setOptions(array(
+            'curloptions' => array(
+                CURLOPT_CAPATH => dirname($cert),
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_CAINFO => $cert,
+            )
+        ));
+
         return \Zend\Feed\Reader\Reader::import($feedUrl);
     }
 
