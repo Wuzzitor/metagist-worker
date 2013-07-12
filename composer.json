@@ -31,7 +31,8 @@
         "bonndan/RMT"           : "@dev",
         
         "zendframework/zend-feed": "2.2.1",
-        "zendframework/zend-cache": "2.2.1"
+        "zendframework/zend-cache": "2.2.1",
+        "zendframework/zend-http": "2.2.1"
     },
     "require-dev": {
         
