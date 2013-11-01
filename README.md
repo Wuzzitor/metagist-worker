@@ -1,4 +1,4 @@
-metagist-worker
-===============
+metagist-worker (deprecated)
+============================
 
-Information factory for metagist.org
+Was the information factory for metagist.org. Features will be including in metagist-server.
